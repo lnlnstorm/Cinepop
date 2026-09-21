@@ -33,6 +33,7 @@
                 if (/invalid.*email|email.*invalid/i.test(error.message)) throw new Error("Informe um endereço de e-mail válido.");
                 if (/database|duplicate|username/i.test(error.message)) throw new Error("Não foi possível salvar o perfil. Tente outro nome de usuário; se persistir, a configuração do cadastro precisa ser conferida.");
                 if (typeof error.message === "string" && error.message.trim()) throw new Error(error.message);
+                if (error.status === 400) throw new Error("O Supabase recusou o cadastro. Confira Authentication > URL Configuration e adicione " + new URL("login.html", location.href).href + ". Código: " + (error.code || "400"));
                 throw new Error("Não foi possível criar a conta. Confira os dados e tente novamente.");
             }
             if (!data.user) throw new Error("O cadastro não foi confirmado. Tente novamente.");
