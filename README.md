@@ -395,10 +395,3 @@ O Cinepop é um projeto independente desenvolvido para fins educacionais.
 O projeto não possui vínculo com o Letterboxd.
 
 Os dados e imagens relacionados a filmes e séries são fornecidos pelo TMDB.
-
-
-
-
-git add README.md
-git commit -m "docs: atualiza README do Cinepop"
-git push origin main
