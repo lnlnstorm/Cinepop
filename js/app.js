@@ -12,6 +12,7 @@
         console.error(error);
         if (error?.code === "23505") return "Este registro já existe. Atualize a página para conferir.";
         if (["42501", "PGRST202", "42P01", "42703"].includes(error?.code)) return "Não foi possível acessar este recurso. A configuração do banco precisa ser conferida.";
+        if (typeof error?.message === "string" && error.message.trim()) return error.message;
         return error instanceof Error ? error.message : "Não foi possível concluir. Verifique sua conexão e tente novamente.";
     };
     C.query = async query => {
