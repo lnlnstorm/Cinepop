@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Criar conta | Cinepop</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body class="pagina-auth">
+
+
+    <main class="auth-container">
+
+        <section class="auth-box">
+
+            <a href="index.html" class="auth-logo">
+                Cinepop
+            </a>
+
+
+            <h1>Criar conta</h1>
+
+            <p class="auth-descricao">
+                Entre para registrar, avaliar e descobrir filmes.
+            </p>
+
+
+            <form id="form-cadastro">
+
+
+                <div class="campo">
+
+                    <label for="nome">
+                        Nome
+                    </label>
+
+                    <input type="text" id="nome" placeholder="Seu nome" required>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="username">
+                        Nome de usuário
+                    </label>
+
+                    <div class="username-input">
+
+                        <span>@</span>
+
+                        <input type="text" id="username" placeholder="seuusuario" minlength="3" maxlength="30" required>
+
+                    </div>
+
+                    <small>
+                        Use letras, números, ponto ou _
+                    </small>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="email">
+                        E-mail
+                    </label>
+
+                    <input type="email" id="email" placeholder="email@exemplo.com" required>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="senha">
+                        Senha
+                    </label>
+
+                    <input type="password" id="senha" placeholder="Mínimo de 6 caracteres" minlength="6" required>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="confirmar-senha">
+                        Confirmar senha
+                    </label>
+
+                    <input type="password" id="confirmar-senha" placeholder="Digite novamente" required>
+
+                </div>
+
+
+                <button type="submit" class="btn-auth" id="btn-cadastro">
+                    Criar conta
+                </button>
+
+
+                <p id="mensagem" role="status" aria-live="polite" class="mensagem-auth"></p>
+
+            </form>
+
+
+            <p class="auth-alternativa">
+
+                Já possui uma conta?
+
+                <a href="login.html">
+                    Entrar
+                </a>
+
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/cadastro.js"></script>
+
+</body>
+
+</html>

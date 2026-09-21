@@ -1,0 +1,9 @@
+.cinepop-tools/
+.cinepop-backup/
+
+js/config.local.js
+node_modules/
+.env
+.env.*
+!.env.example
+cinepop-publicar.zip

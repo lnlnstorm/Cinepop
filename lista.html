@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Listas | Cinepop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body class="pagina-app">
+    <a class="pular" href="#principal">Pular para o conteúdo</a>
+    <header class="cabecalho" id="cabecalho"></header>
+    <main class="container" id="principal">
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <section id="pagina-listas" hidden>
+            <div class="hero-app"><span class="eyebrow">SUAS PRÓPRIAS CURADORIAS</span>
+                <h1>Uma lista para cada momento.</h1>
+                <p>Reúna filmes e séries que merecem ficar juntos.</p>
+            </div>
+            <details id="criar-lista" class="painel" hidden>
+                <summary>Criar uma lista</summary>
+                <form id="form-criar-lista">
+                    <div class="campo"><label for="titulo-nova-lista">Título</label><input id="titulo-nova-lista"
+                            required maxlength="120"></div>
+                    <div class="campo"><label for="descricao-nova-lista">Descrição</label><textarea
+                            id="descricao-nova-lista" rows="3" maxlength="2000"></textarea></div><label
+                        class="check"><input id="publica-nova-lista" type="checkbox" checked> Lista
+                        pública</label><button class="btn-salvar" id="criar-lista-btn">Criar lista</button>
+                </form>
+            </details><label id="filtro-minhas" class="check" hidden><input type="checkbox" id="somente-minhas"> Somente
+                minhas listas</label>
+            <div id="colecao-listas" class="grid-listas"></div>
+        </section>
+        <section id="pagina-lista" hidden><a href="lista.html">← Todas as listas</a>
+            <div class="hero-app"><span class="eyebrow" id="visibilidade-lista"></span>
+                <h1 id="titulo-lista"></h1>
+                <p id="descricao-lista" class="texto-livre"></p><a id="autor-lista">Ver perfil de quem criou →</a>
+            </div>
+            <details id="editar-lista" class="painel" hidden>
+                <summary>Editar lista</summary>
+                <form id="form-editar-lista">
+                    <div class="campo"><label for="titulo-edicao">Título</label><input id="titulo-edicao" required
+                            maxlength="120"></div>
+                    <div class="campo"><label for="descricao-edicao">Descrição</label><textarea id="descricao-edicao"
+                            maxlength="2000" rows="3"></textarea></div><label class="check"><input type="checkbox"
+                            id="publica-edicao"> Lista pública</label>
+                    <div class="acoes"><button class="btn-salvar" id="salvar-lista">Salvar alterações</button><button
+                            type="button" class="btn-perigo" id="excluir-lista">Excluir lista</button></div>
+                </form>
+                <p>Para adicionar títulos, abra um filme ou série e use “Adicionar a uma lista”.</p>
+            </details>
+            <div id="itens-lista" class="grid-filmes"></div>
+        </section>
+    </main>
+    <footer class="rodape">Cinepop · Seu próximo favorito está por aqui.<br><a href="https://www.themoviedb.org/"
+            target="_blank" rel="noopener noreferrer">Dados e imagens: TMDB</a><small>This product uses the TMDB API but
+            is not endorsed or certified by TMDB.</small></footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="js/supabase.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script src="js/listas.js" defer></script>
+</body>
+
+</html>

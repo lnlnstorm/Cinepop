@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Entrar | Cinepop</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body class="pagina-auth">
+
+
+    <main class="auth-container">
+
+        <section class="auth-box">
+
+            <a href="index.html" class="auth-logo">
+                Cinepop
+            </a>
+
+
+            <h1>Bem-vindo de volta</h1>
+
+            <p class="auth-descricao">
+                Entre na sua conta para continuar.
+            </p>
+
+
+            <form id="form-login">
+
+
+                <div class="campo">
+
+                    <label for="email">
+                        E-mail
+                    </label>
+
+                    <input type="email" id="email" placeholder="email@exemplo.com" required>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="senha">
+                        Senha
+                    </label>
+
+                    <input type="password" id="senha" placeholder="Sua senha" required>
+
+                </div>
+
+
+                <button type="submit" id="btn-login" class="btn-auth">
+                    Entrar
+                </button>
+
+
+                <p id="mensagem" role="status" aria-live="polite" class="mensagem-auth"></p>
+
+            </form>
+
+
+            <p class="auth-alternativa">
+
+                Ainda não possui uma conta?
+
+                <a href="cadastro.html">
+                    Criar conta
+                </a>
+
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/login.js"></script>
+
+</body>
+
+</html>

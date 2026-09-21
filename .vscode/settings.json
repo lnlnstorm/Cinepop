@@ -1,0 +1,10 @@
+{
+  "files.exclude": {
+    "**/.cinepop-tools": true,
+    "**/.cinepop-backup": true
+  },
+  "search.exclude": {
+    "**/.cinepop-tools/**": true,
+    "**/.cinepop-backup/**": true
+  }
+}

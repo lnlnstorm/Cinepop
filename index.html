@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Filmes | Cinepop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body class="pagina-app" data-tipo="movie">
+    <a class="pular" href="#principal">Pular para o conteúdo</a>
+    <header class="cabecalho" id="cabecalho"></header>
+    <main class="container" id="principal">
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <section class="hero-app"><span class="eyebrow">SEU MUNDO EM CENA</span>
+            <h1>Histórias que ficam com você.</h1>
+            <p>Descubra filmes, organize o que quer assistir e compartilhe seus favoritos.</p>
+            <form id="form-pesquisa" class="pesquisa"><label for="pesquisa">Pesquisar filmes</label>
+                <div class="barra-pesquisa"><input id="pesquisa" type="search" maxlength="150"
+                        placeholder="Ex.: Interestelar"><button type="submit">Buscar</button></div>
+            </form>
+        </section>
+        <section>
+            <h2 id="titulo-catalogo">Em alta nesta semana</h2>
+            <p class="muted">Sugestões do TMDB; as notas abaixo usam a escala de 0 a 10.</p>
+            <div id="catalogo" class="grid-filmes"></div>
+            <div class="paginacao"><button id="carregar-mais" class="btn-secundario" hidden>Carregar mais</button></div>
+        </section>
+    </main>
+    <footer class="rodape">Cinepop · Seu próximo favorito está por aqui.<br><a href="https://www.themoviedb.org/"
+            target="_blank" rel="noopener noreferrer">Dados e imagens: TMDB</a><small>This product uses the TMDB API but
+            is not endorsed or certified by TMDB.</small></footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="js/supabase.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script src="js/config.local.js" defer></script>
+    <script src="js/tmdb.js" defer></script>
+    <script src="js/catalogo.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,555 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #14181c;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* CABEÇALHO */
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 8%;
+
+    background: #202830;
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    color: #9ab;
+    text-decoration: none;
+
+    transition: 0.2s;
+}
+
+nav a:hover {
+    color: #ffffff;
+}
+
+
+/* HERO */
+
+.hero {
+    padding: 70px 8% 50px;
+}
+
+.hero h1 {
+    font-size: 42px;
+
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #9ab;
+
+    margin-bottom: 30px;
+}
+
+
+/* PESQUISA */
+
+.pesquisa label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-weight: bold;
+}
+
+.barra-pesquisa {
+    display: flex;
+
+    max-width: 700px;
+}
+
+.barra-pesquisa input {
+    flex: 1;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 6px 0 0 6px;
+
+    font-size: 16px;
+}
+
+.barra-pesquisa button {
+    padding: 0 25px;
+
+    border: none;
+
+    background: #00c030;
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    border-radius: 0 6px 6px 0;
+}
+
+.barra-pesquisa button:hover {
+    background: #00a628;
+}
+
+
+/* CATÁLOGO */
+
+.catalogo {
+    padding: 20px 8% 60px;
+}
+
+.catalogo h2 {
+    margin-bottom: 25px;
+}
+
+
+/* GRID */
+
+.grid-filmes {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(160px, 1fr));
+
+    gap: 25px;
+}
+
+
+/* CARD */
+
+.card-filme {
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.card-filme:hover {
+    transform: translateY(-6px);
+}
+
+.card-filme img {
+    width: 100%;
+
+    aspect-ratio: 2 / 3;
+
+    object-fit: cover;
+
+    border-radius: 6px;
+}
+
+.card-filme h3 {
+    margin-top: 10px;
+
+    font-size: 16px;
+}
+
+.card-filme p {
+    color: #9ab;
+
+    margin-top: 5px;
+}
+
+
+/* FILME SELECIONADO */
+
+.filme-selecionado {
+    padding: 50px 8%;
+
+    background: #1b2228;
+}
+
+.escondido {
+    display: none;
+}
+
+.filme-info {
+    display: flex;
+
+    gap: 35px;
+
+    margin-bottom: 50px;
+}
+
+.filme-info img {
+    width: 220px;
+
+    border-radius: 8px;
+}
+
+.filme-info h2 {
+    font-size: 34px;
+
+    margin-bottom: 10px;
+}
+
+.filme-info p {
+    color: #9ab;
+
+    line-height: 1.6;
+
+    margin-bottom: 15px;
+}
+
+
+/* NOTA */
+
+.nota-comunidade {
+    margin-top: 25px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.nota-comunidade span {
+    color: #9ab;
+}
+
+.nota-comunidade strong {
+    color: #00e054;
+
+    font-size: 25px;
+}
+
+
+/* FORMULÁRIO */
+
+#form-avaliacao {
+    max-width: 650px;
+}
+
+#form-avaliacao h2 {
+    margin-bottom: 25px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 20px;
+}
+
+.campo label {
+    margin-bottom: 8px;
+
+    font-weight: bold;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+    padding: 12px;
+
+    border: 1px solid #456;
+    border-radius: 6px;
+
+    background: #2c3440;
+    color: white;
+
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.btn-salvar {
+    padding: 14px 25px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #00c030;
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.btn-salvar:hover {
+    background: #00a628;
+}
+
+#mensagem {
+    margin-top: 15px;
+}
+
+
+/* RESPONSIVO */
+
+@media (max-width: 700px) {
+
+    nav {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .filme-info {
+        flex-direction: column;
+    }
+
+    .filme-info img {
+        width: 180px;
+    }
+}
+
+/* =========================
+   AUTENTICAÇÃO
+========================= */
+
+.pagina-auth {
+    min-height: 100vh;
+
+    background:
+        linear-gradient(rgba(20, 24, 28, 0.88),
+            rgba(20, 24, 28, 0.96)),
+        #14181c;
+
+    display: flex;
+}
+
+
+.auth-container {
+    width: 100%;
+
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 20px;
+}
+
+
+.auth-box {
+    width: 100%;
+    max-width: 430px;
+
+    background: #202830;
+
+    padding: 40px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+
+.auth-logo {
+    display: inline-block;
+
+    margin-bottom: 35px;
+
+    color: #ffffff;
+
+    font-size: 30px;
+    font-weight: bold;
+
+    text-decoration: none;
+}
+
+
+.auth-box h1 {
+    font-size: 28px;
+
+    margin-bottom: 8px;
+}
+
+
+.auth-descricao {
+    color: #9ab;
+
+    margin-bottom: 30px;
+}
+
+
+.auth-box .campo {
+    margin-bottom: 20px;
+}
+
+
+.auth-box label {
+    color: #ffffff;
+
+    font-size: 14px;
+}
+
+
+.auth-box input {
+    width: 100%;
+
+    padding: 14px;
+
+    border: 1px solid #44515c;
+
+    border-radius: 6px;
+
+    background: #14181c;
+
+    color: white;
+
+    outline: none;
+
+    font-size: 15px;
+}
+
+
+.auth-box input:focus {
+    border-color: #00c030;
+}
+
+
+.auth-box small {
+    margin-top: 7px;
+
+    color: #789;
+}
+
+
+.username-input {
+    display: flex;
+    align-items: center;
+
+    background: #14181c;
+
+    border: 1px solid #44515c;
+
+    border-radius: 6px;
+}
+
+
+.username-input span {
+    padding-left: 14px;
+
+    color: #9ab;
+}
+
+
+.username-input input {
+    border: none;
+}
+
+
+.btn-auth {
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #00c030;
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.btn-auth:hover {
+    background: #00a628;
+}
+
+
+.btn-auth:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+
+.auth-alternativa {
+    margin-top: 30px;
+
+    padding-top: 25px;
+
+    border-top: 1px solid #34404a;
+
+    color: #9ab;
+
+    text-align: center;
+}
+
+
+.auth-alternativa a {
+    color: #00c030;
+
+    text-decoration: none;
+
+    font-weight: bold;
+}
+
+
+.esqueci-senha {
+    display: block;
+
+    margin-top: -8px;
+    margin-bottom: 20px;
+
+    color: #9ab;
+
+    font-size: 14px;
+
+    text-align: right;
+
+    text-decoration: none;
+}
+
+
+.esqueci-senha:hover {
+    color: white;
+}
+
+
+.mensagem-auth {
+    margin-top: 18px;
+
+    text-align: center;
+}
+
+
+.mensagem-auth.erro {
+    color: #ff6666;
+}
+
+
+.mensagem-auth.sucesso {
+    color: #00e054;
+}

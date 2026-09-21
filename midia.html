@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Título | Cinepop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body class="pagina-app">
+    <a class="pular" href="#principal">Pular para o conteúdo</a>
+    <header class="cabecalho" id="cabecalho"></header>
+    <main class="container" id="principal">
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <section id="conteudo-midia" hidden>
+            <div class="midia-hero"><img id="poster" class="poster-grande" hidden alt="">
+                <div><span class="eyebrow">EXPLORE A HISTÓRIA</span>
+                    <h1 id="titulo"></h1>
+                    <p id="detalhes" class="muted"></p>
+                    <p id="sinopse" class="sinopse"></p>
+                    <div class="notas">
+                        <div><span>Comunidade Cinepop</span><strong id="media-comunidade">Sem avaliações</strong></div>
+                        <div><span>Nota externa</span><strong id="nota-tmdb"></strong></div>
+                    </div>
+                    <p id="convite-login" hidden><a href="login.html">Entre na sua conta</a> para avaliar, favoritar e
+                        salvar títulos.</p>
+                </div>
+            </div>
+            <div id="acoes-usuario" hidden>
+                <div class="acoes"><button id="watchlist" class="btn-secundario" aria-pressed="false">+
+                        Watchlist</button><button id="favorito" class="btn-secundario" aria-pressed="false">♡
+                        Favoritar</button></div>
+                <div class="duas-colunas">
+                    <section class="painel">
+                        <h2>Sua avaliação</h2>
+                        <form id="form-avaliacao">
+                            <div class="campo"><label for="nota">Nota Cinepop (0,5 a 5)</label><select id="nota"
+                                    required>
+                                    <option value="">Selecione uma nota</option>
+                                    <option value="0.5">0.5 / 5</option>
+                                    <option value="1">1.0 / 5</option>
+                                    <option value="1.5">1.5 / 5</option>
+                                    <option value="2">2.0 / 5</option>
+                                    <option value="2.5">2.5 / 5</option>
+                                    <option value="3">3.0 / 5</option>
+                                    <option value="3.5">3.5 / 5</option>
+                                    <option value="4">4.0 / 5</option>
+                                    <option value="4.5">4.5 / 5</option>
+                                    <option value="5">5.0 / 5</option>
+                                </select></div>
+                            <div class="campo"><label for="review">O que você achou?</label><textarea id="review"
+                                    rows="5" maxlength="5000" placeholder="Conte sua experiência"></textarea></div>
+                            <label class="check"><input type="checkbox" id="spoiler"> Contém spoilers</label>
+                            <div class="acoes"><button id="salvar-avaliacao" class="btn-salvar">Salvar
+                                    avaliação</button><button type="button" id="excluir-avaliacao" class="btn-perigo"
+                                    hidden>Excluir avaliação</button></div>
+                        </form>
+                    </section>
+                    <section class="painel">
+                        <h2>Adicionar a uma lista</h2>
+                        <form id="form-adicionar-lista">
+                            <div class="campo"><label for="lista-destino">Suas listas</label><select id="lista-destino"
+                                    required>
+                                    <option value="">Escolha uma lista</option>
+                                </select></div><button id="adicionar-lista" class="btn-salvar">Adicionar</button>
+                        </form>
+                        <p><a href="lista.html">Criar ou gerenciar listas →</a></p>
+                    </section>
+                </div>
+            </div>
+            <section class="secao">
+                <h2>Avaliações recentes</h2>
+                <p class="muted">Até 30 avaliações visíveis mais recentes. A média inclui todas as avaliações públicas e
+                    as suas.</p>
+                <div id="reviews" class="pilha"></div>
+            </section>
+        </section>
+    </main>
+    <footer class="rodape">Cinepop · Seu próximo favorito está por aqui.<br><a href="https://www.themoviedb.org/"
+            target="_blank" rel="noopener noreferrer">Dados e imagens: TMDB</a><small>This product uses the TMDB API but
+            is not endorsed or certified by TMDB.</small></footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="js/supabase.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script src="js/config.local.js" defer></script>
+    <script src="js/tmdb.js" defer></script>
+    <script src="js/midia.js" defer></script>
+</body>
+
+</html>
