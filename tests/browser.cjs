@@ -85,6 +85,9 @@ async function main() {
         assert.equal(await page.locator("#total-series").textContent(), "1");
         assert.deepEqual(await page.locator("#filmes-recentes h3").allTextContents(), ["Titulo 2", "Titulo 3", "Titulo 1"]);
         assert.equal(await page.locator("#tabela-notas tr").count(), 10);
+        await page.selectOption("#filtro-ano", "2023");
+        assert.equal(await page.locator("#avaliacoes .card-filme").count(), 1);
+        await page.click("#limpar-nota");
         await page.locator('[data-nota="4.5"]').click();
         assert.equal(await page.locator("#avaliacoes .card-filme").count(), 2);
         assert.equal(await page.locator('[data-nota="4.5"]').getAttribute("aria-pressed"), "true");

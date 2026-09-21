@@ -3,6 +3,7 @@
 const C = window.Cinepop;
 const id = C.params.get("id");
 let list;
+const tagsFrom = value => [...new Set(value.split(/[\s,]+/).map(tag => tag.trim().replace(/^#/,"").toLowerCase()).filter(tag => /^[a-z0-9áàâãéêíóôõúç_-]{1,30}$/i.test(tag)))].slice(0, 10);
 async function collection() {
     const mine = C.$("#somente-minhas").checked;
     let query = () => {
@@ -18,6 +19,7 @@ async function items() {
     C.$("#itens-lista").innerHTML = rows.length ? rows.filter(row => row.midia).map(row =>
         '<div>' + C.card(row.midia) + (C.user?.id === list.usuario_id ? '<button class="btn-secundario remover-item" data-id="' + row.id + '">Remover da lista</button>' : '') + '</div>').join("") :
         '<p class="vazio">Esta lista está vazia. Abra um filme ou série para adicionar.</p>';
+    C.$("#contagem-lista").textContent = rows.length === 1 ? "1 título nesta lista" : rows.length + " títulos nesta lista";
     C.$("#itens-lista").querySelectorAll(".remover-item").forEach(button => {
         button.onclick = () => C.action(button, async () => {
             await C.query(db.from("lista_midias").delete().eq("id", button.dataset.id).eq("lista_id", id));
@@ -49,6 +51,7 @@ async function init() {
         C.$("#editar-lista").hidden = false;
         C.$("#titulo-edicao").value = list.titulo;
         C.$("#descricao-edicao").value = list.descricao || "";
+        C.$("#tags-edicao").value = (list.tags || []).map(tag => "#" + tag).join(" ");
         C.$("#publica-edicao").checked = list.publica;
     }
     await items();
@@ -60,7 +63,7 @@ C.$("#form-criar-lista").onsubmit = event => {
         const titulo = C.$("#titulo-nova-lista").value.trim();
         if (!titulo) throw new Error("Digite o título da lista.");
         const created = await C.query(db.from("listas").insert({usuario_id:user.id, titulo,
-            descricao:C.$("#descricao-nova-lista").value.trim(), publica:C.$("#publica-nova-lista").checked}).select().single());
+            descricao:C.$("#descricao-nova-lista").value.trim(), tags:tagsFrom(C.$("#tags-nova-lista").value), publica:C.$("#publica-nova-lista").checked}).select().single());
         location.href = "lista.html?id=" + created.id;
     });
 };
@@ -70,7 +73,7 @@ C.$("#form-editar-lista").onsubmit = event => {
     C.action(C.$("#salvar-lista"), async () => {
         const titulo = C.$("#titulo-edicao").value.trim();
         if (!titulo) throw new Error("Digite o título da lista.");
-        list = await C.query(db.from("listas").update({titulo, descricao:C.$("#descricao-edicao").value.trim(),
+        list = await C.query(db.from("listas").update({titulo, descricao:C.$("#descricao-edicao").value.trim(), tags:tagsFrom(C.$("#tags-edicao").value),
             publica:C.$("#publica-edicao").checked}).eq("id", id).eq("usuario_id", C.requireUser().id).select().single());
         showList(); C.message("Lista atualizada.");
     });

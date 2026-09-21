@@ -2,25 +2,29 @@
     "use strict";
     const C = window.Cinepop;
     let profile, own, ratings = [], pendingPhoto = null, removePhoto = false, previewUrl = null;
-    let selectedRating = null, photoVersion = 0, avatarVersion = 0;
-    const formatNote = note => Number(note).toLocaleString("pt-BR", {maximumFractionDigits: 1});
+    let selectedRating = null, selectedType = null, selectedYear = "", photoVersion = 0, avatarVersion = 0;
+    const formatNote = note => Number(note).toLocaleString("pt-BR", { maximumFractionDigits: 1 });
     async function counts() {
         const [followers, following] = await Promise.all([
-            db.from("seguidores").select("id", {count:"exact", head:true}).eq("seguido_id", profile.id),
-            db.from("seguidores").select("id", {count:"exact", head:true}).eq("seguidor_id", profile.id)
+            db.from("seguidores").select("id", { count: "exact", head: true }).eq("seguido_id", profile.id),
+            db.from("seguidores").select("id", { count: "exact", head: true }).eq("seguidor_id", profile.id)
         ]);
         if (followers.error) throw followers.error;
         if (following.error) throw following.error;
-        C.$("#contagens").textContent = followers.count + " seguidores · " + following.count + " seguindo";
+        C.$("#contagens").innerHTML = '<a href="amigos.html?perfil=' + encodeURIComponent(profile.id) + '&modo=seguidores">' + followers.count + ' seguidores</a> · <a href="amigos.html?perfil=' + encodeURIComponent(profile.id) + '&modo=seguindo">' + following.count + ' seguindo</a>';
     }
     function initials() {
-        return (profile.nome || profile.username).trim().split(/\s+/).slice(0,2).map(part => part[0]).join("").toUpperCase();
+        return (profile.nome || profile.username).trim().split(/\s+/).slice(0, 2).map(part => part[0]).join("").toUpperCase();
     }
     async function renderProfile() {
         const version = ++avatarVersion;
         C.$("#nome-perfil").textContent = profile.nome || profile.username;
         C.$("#username-perfil").textContent = "@" + profile.username;
         C.$("#bio-perfil").textContent = profile.bio || "Ainda sem biografia.";
+        C.$("#links-sociais").innerHTML = [
+            profile.instagram_url ? '<a href="' + C.escape(profile.instagram_url) + '" target="_blank" rel="noopener noreferrer">Instagram ↗</a>' : '',
+            profile.letterboxd_url ? '<a href="' + C.escape(profile.letterboxd_url) + '" target="_blank" rel="noopener noreferrer">Letterboxd ↗</a>' : ''
+        ].join('');
         C.$("#avatar-iniciais").textContent = initials();
         C.$("#avatar-iniciais").hidden = false;
         const avatar = C.$("#avatar");
@@ -38,6 +42,7 @@
             avatar.src = url;
             avatar.hidden = false;
             C.$("#avatar-iniciais").hidden = true;
+            C.$("#ampliar-avatar").hidden = false;
         } catch (error) {
             console.warn("Falha ao carregar avatar:", error);
             if (own) C.message("Não foi possível carregar sua foto. Tente recarregar a página.", true, "#status-foto");
@@ -50,7 +55,7 @@
         C.$("#foto-preview").removeAttribute("src");
     }
     async function preparePhoto(file) {
-        if (!["image/jpeg","image/png","image/webp"].includes(file.type))
+        if (!["image/jpeg", "image/png", "image/webp"].includes(file.type))
             throw new Error("Escolha uma imagem JPG, PNG ou WebP.");
         if (file.size > 10 * 1024 * 1024) throw new Error("Escolha uma foto de até 10 MB.");
         let bitmap;
@@ -61,10 +66,10 @@
             canvas.width = canvas.height = 512;
             const context = canvas.getContext("2d");
             context.fillStyle = "#202830";
-            context.fillRect(0,0,512,512);
+            context.fillRect(0, 0, 512, 512);
             const side = Math.min(bitmap.width, bitmap.height);
-            context.drawImage(bitmap, (bitmap.width-side)/2, (bitmap.height-side)/2, side, side, 0,0,512,512);
-            const blob = await new Promise(resolve => canvas.toBlob(resolve,"image/jpeg",0.88));
+            context.drawImage(bitmap, (bitmap.width - side) / 2, (bitmap.height - side) / 2, side, side, 0, 0, 512, 512);
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.88));
             if (!blob) throw new Error("Não foi possível preparar a foto.");
             return blob;
         } finally { bitmap.close(); }
@@ -106,21 +111,23 @@
         C.message("Clique em Salvar perfil para aplicar a alteração.", false, "#status-foto");
     };
     function renderRatingList() {
-        const filtered = selectedRating === null ? ratings : ratings.filter(row => Number(row.nota) === selectedRating);
-        C.$("#filtro-nota").textContent = selectedRating === null ? "Todas as notas" : "Nota " + formatNote(selectedRating) + "/5";
-        C.$("#limpar-nota").hidden = selectedRating === null;
-        C.grid(C.$("#avaliacoes"), filtered.filter(row => row.midia), "Nenhuma avaliação com esta nota.");
+        const filtered = ratings.filter(row => (selectedRating === null || Number(row.nota) === selectedRating) && (!selectedType || row.midia?.tipo === selectedType) && (!selectedYear || row.data_assistido?.startsWith(selectedYear)));
+        C.$("#filtro-nota").textContent = [selectedRating === null ? "Todas as notas" : "Nota " + formatNote(selectedRating) + "/5", selectedType === "movie" ? "Filmes" : selectedType === "tv" ? "Séries" : "", selectedYear].filter(Boolean).join(" · ");
+        C.$("#limpar-nota").hidden = selectedRating === null && !selectedType && !selectedYear;
+        C.$("#avaliacoes").innerHTML = filtered.length ? filtered.filter(row => row.midia).map(row => { const reviewed = new Date(row.created_at), watched = row.data_assistido ? new Date(row.data_assistido + "T12:00:00") : null; const details = "Nota: " + formatNote(row.nota) + "/5" + (watched && !Number.isNaN(watched.getTime()) ? " · Assistido em " + watched.toLocaleDateString("pt-BR") : "") + (Number.isNaN(reviewed.getTime()) ? "" : " · Publicado em " + reviewed.toLocaleDateString("pt-BR")); return C.card(row.midia, details); }).join("") : '<p class="vazio">Nenhuma avaliação neste filtro.</p>';
         C.$("#grafico-notas").querySelectorAll("button").forEach(button =>
             button.setAttribute("aria-pressed", String(Number(button.dataset.nota) === selectedRating)));
     }
     function renderRatings() {
-        const bins = Array.from({length:10},(_,index) => ({note:(index+1)/2, count:0}));
+        const bins = Array.from({ length: 10 }, (_, index) => ({ note: (index + 1) / 2, count: 0 }));
         ratings.forEach(row => { const bin = bins.find(item => item.note === Number(row.nota)); if (bin) bin.count++; });
-        const max = Math.max(1,...bins.map(bin => bin.count));
-        const average = ratings.length ? ratings.reduce((sum,row) => sum+Number(row.nota),0)/ratings.length : null;
+        const max = Math.max(1, ...bins.map(bin => bin.count));
+        const average = ratings.length ? ratings.reduce((sum, row) => sum + Number(row.nota), 0) / ratings.length : null;
         C.$("#total-avaliacoes").textContent = ratings.length;
-        C.$("#media-perfil").textContent = average === null ? "—" : average.toLocaleString("pt-BR",{minimumFractionDigits:1, maximumFractionDigits:1}) + "/5";
-        C.$("#total-filmes").textContent = ratings.filter(row => row.midia?.tipo === "movie").length;
+        C.$("#media-perfil").textContent = average === null ? "—" : average.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "/5";
+        const currentYear = String(new Date().getFullYear());
+        const movieRatings = ratings.filter(row => row.midia?.tipo === "movie");
+        C.$("#total-filmes").textContent = movieRatings.length;
         C.$("#total-series").textContent = ratings.filter(row => row.midia?.tipo === "tv").length;
         C.$("#grafico-notas").innerHTML = bins.map(bin => {
             const label = formatNote(bin.note) + " estrelas: " + bin.count + " avaliações";
@@ -129,16 +136,26 @@
                 (bin.count / max * 100) + '%"></span></span><span class="valor-nota">' + formatNote(bin.note) + '</span></button>';
         }).join("");
         C.$("#tabela-notas").innerHTML = bins.map(bin => '<tr><th scope="row">' + formatNote(bin.note) + '/5</th><td>' + bin.count +
-            '</td><td>' + (ratings.length ? (bin.count/ratings.length*100).toLocaleString("pt-BR",{maximumFractionDigits:1}) : "0") + '%</td></tr>').join("");
+            '</td><td>' + (ratings.length ? (bin.count / ratings.length * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) : "0") + '%</td></tr>').join("");
+        const years = [...new Set(
+            ratings
+                .filter(row => row.data_assistido)
+                .map(row =>
+                    row.data_assistido.slice(0, 4)
+                )
+        )]
+            .sort()
+            .reverse();
+        C.$("#filtro-ano").innerHTML = '<option value="">Todos os anos</option>' + years.map(year => '<option value="' + year + '">' + year + '</option>').join("");
         C.$("#grafico-notas").querySelectorAll("button").forEach(button => {
             button.onclick = () => {
                 selectedRating = Number(button.dataset.nota);
                 renderRatingList();
                 C.$("#todas-avaliacoes").open = true;
-                C.$("#todas-avaliacoes").scrollIntoView({behavior:"smooth",block:"start"});
+                C.$("#todas-avaliacoes").scrollIntoView({ behavior: "smooth", block: "start" });
             };
         });
-        const recent = ratings.filter(row => row.midia?.tipo === "movie").slice(0,6);
+        const recent = ratings.filter(row => row.midia?.tipo === "movie").slice(0, 6);
         C.$("#filmes-recentes").innerHTML = recent.length ? recent.map(row => {
             const date = new Date(row.created_at);
             const when = Number.isNaN(date.getTime()) ? "" : " · " + date.toLocaleDateString("pt-BR");
@@ -146,13 +163,15 @@
         }).join("") : '<p class="vazio">Os filmes avaliados aparecerão aqui.</p>';
         renderRatingList();
     }
-    C.$("#limpar-nota").onclick = () => { selectedRating = null; renderRatingList(); };
+    C.$("#limpar-nota").onclick = () => { selectedRating = null; selectedType = null; selectedYear = ""; C.$("#filtro-ano").value = ""; document.querySelectorAll(".filtro-tipo").forEach(item => item.classList.remove("selecionado")); renderRatingList(); };
+    C.$("#filtro-ano").onchange = event => { selectedYear = event.target.value; renderRatingList(); };
+    document.querySelectorAll(".filtro-tipo").forEach(button => button.onclick = () => { selectedType = selectedType === button.dataset.tipo ? null : button.dataset.tipo; document.querySelectorAll(".filtro-tipo").forEach(item => item.classList.toggle("selecionado", item.dataset.tipo === selectedType)); renderRatingList(); C.$("#todas-avaliacoes").open = true; });
     async function init() {
         await C.ready;
         const id = C.params.get("id") || C.user?.id;
         if (!id) throw new Error("Entre na sua conta para ver seu perfil.");
         if (!/^[0-9a-f-]{36}$/i.test(id)) throw new Error("Perfil inválido.");
-        profile = await C.query(db.from("perfis").select("*").eq("id",id).maybeSingle());
+        profile = await C.query(db.from("perfis").select("*").eq("id", id).maybeSingle());
         if (!profile) throw new Error("Este perfil é privado ou não foi encontrado.");
         own = C.user?.id === profile.id;
         await renderProfile();
@@ -164,25 +183,36 @@
             C.$("#username").value = profile.username;
             C.$("#bio").value = profile.bio || "";
             C.$("#avatar-url").value = profile.avatar_url?.startsWith("https://") ? profile.avatar_url : "";
-            const settings = await C.query(db.from("configuracoes").select("perfil_privado").eq("usuario_id",id).maybeSingle());
+            C.$("#instagram-url").value = profile.instagram_url || "";
+            C.$("#letterboxd-url").value = profile.letterboxd_url || "";
+            const settings = await C.query(db.from("configuracoes").select("perfil_privado").eq("usuario_id", id).maybeSingle());
             C.$("#perfil-privado").checked = !!settings?.perfil_privado;
             C.$("#secao-watchlist").hidden = false;
         } else if (C.user) {
-            const following = await C.query(db.from("seguidores").select("id").eq("seguidor_id",C.user.id).eq("seguido_id",id).maybeSingle());
+            const following = await C.query(db.from("seguidores").select("id").eq("seguidor_id", C.user.id).eq("seguido_id", id).maybeSingle());
             const button = C.$("#seguir"); button.hidden = false;
-            C.followButton(button,id,!!following);
-            button.addEventListener("followchange",() => counts().catch(error => C.message(C.error(error),true)));
+            C.followButton(button, id, !!following);
+            button.addEventListener("followchange", () => counts().catch(error => C.message(C.error(error), true)));
         }
-        const [favorites, allRatings, lists, watchlist] = await Promise.all([
-            C.all(() => db.from("favoritos").select("id,midia:midias(*)").eq("usuario_id",id).order("id",{ascending:false})),
-            C.all(() => db.from("avaliacoes").select("id,nota,created_at,midia:midias(*)").eq("usuario_id",id).order("created_at",{ascending:false}).order("id",{ascending:false})),
-            C.all(() => db.from("listas").select("*").eq("usuario_id",id).order("id",{ascending:false})),
-            own ? C.all(() => db.from("watchlist").select("id,midia:midias(*)").eq("usuario_id",id).order("id",{ascending:false})) : []
+        const [favorites, allRatings, lists, watchlist, diary] = await Promise.all([
+            C.all(() => db.from("favoritos").select("id,midia:midias(*)").eq("usuario_id", id).order("id", { ascending: false })),
+            C.all(() =>
+                db.from("avaliacoes")
+                    .select("id,midia_id,nota,created_at,midia:midias(*)")
+                    .eq("usuario_id", id)
+                    .order("created_at", { ascending: false })
+                    .order("id", { ascending: false })
+            ),
+            C.all(() => db.from("listas").select("*").eq("usuario_id", id).order("id", { ascending: false })),
+            own ? C.all(() => db.from("watchlist").select("id,midia:midias(*)").eq("usuario_id", id).order("id", { ascending: false })) : [],
+            C.all(() => db.from("diario").select("id,midia_id,data_assistido,created_at,midia:midias(tipo)").eq("usuario_id", id).order("created_at", { ascending: false }).order("id", { ascending: false }))
         ]);
-        ratings = allRatings;
+        const dateByMedia = new Map();
+        diary.forEach(entry => { if (!dateByMedia.has(entry.midia_id)) dateByMedia.set(entry.midia_id, entry.data_assistido); });
+        ratings = allRatings.map(row => ({ ...row, data_assistido: dateByMedia.get(row.midia_id) }));
         renderRatings();
-        C.grid(C.$("#favoritos"),favorites.filter(row => row.midia),"Ainda não há favoritos.");
-        C.grid(C.$("#watchlist-perfil"),watchlist.filter(row => row.midia),"Sua watchlist está vazia. Adicione títulos pelo catálogo.");
+        C.grid(C.$("#favoritos"), favorites.filter(row => row.midia), "Ainda não há favoritos.");
+        C.grid(C.$("#watchlist-perfil"), watchlist.filter(row => row.midia), "Sua watchlist está vazia. Adicione títulos pelo catálogo.");
         C.$("#listas-perfil").innerHTML = lists.length ? lists.map(C.listCard).join("") : '<p class="vazio">Ainda não há listas.</p>';
     }
     function ownPhotoPath(url) {
@@ -204,36 +234,40 @@
                 if (pendingPhoto) {
                     C.message("Enviando foto...");
                     uploadedPath = profile.id + "/" + crypto.randomUUID() + ".jpg";
-                    const {error} = await db.storage.from("avatars").upload(uploadedPath,pendingPhoto,{contentType:"image/jpeg",upsert:false});
+                    const { error } = await db.storage.from("avatars").upload(uploadedPath, pendingPhoto, { contentType: "image/jpeg", upsert: false });
                     if (error) { uploadedPath = null; throw new Error("Não foi possível enviar a foto. Confira sua conexão e se o upload de avatares está configurado."); }
                     avatar = "avatars/" + uploadedPath;
                 }
                 const result = await C.query(db.rpc("cinepop_atualizar_perfil", {
-                    p_nome:C.$("#nome").value.trim(),p_username:username,p_bio:C.$("#bio").value.trim(),
-                    p_avatar_url:avatar || null,p_privado:C.$("#perfil-privado").checked
+                    p_nome: C.$("#nome").value.trim(), p_username: username, p_bio: C.$("#bio").value.trim(),
+                    p_avatar_url: avatar || null, p_privado: C.$("#perfil-privado").checked,
+                    p_instagram_url: C.$("#instagram-url").value.trim() || null,
+                    p_letterboxd_url: C.$("#letterboxd-url").value.trim() || null
                 }));
                 committed = true;
                 profile = result;
                 pendingPhoto = null; removePhoto = false; clearPreview();
                 C.$("#foto-arquivo").value = "";
-                C.message("",false,"#status-foto");
+                C.message("", false, "#status-foto");
                 await renderProfile();
                 C.$("#link-perfil").textContent = "@" + profile.username;
                 C.message("Perfil atualizado!");
                 if (oldPath && oldPath !== ownPhotoPath(profile.avatar_url)) {
                     try {
-                        const {error} = await db.storage.from("avatars").remove([oldPath]);
-                        if (error) console.warn("Foto antiga não removida:",error);
-                    } catch (error) { console.warn("Foto antiga não removida:",error); }
+                        const { error } = await db.storage.from("avatars").remove([oldPath]);
+                        if (error) console.warn("Foto antiga não removida:", error);
+                    } catch (error) { console.warn("Foto antiga não removida:", error); }
                 }
             } catch (error) {
                 if (uploadedPath && !committed) {
-                    try { await db.storage.from("avatars").remove([uploadedPath]); } catch {}
+                    try { await db.storage.from("avatars").remove([uploadedPath]); } catch { }
                 }
                 throw error;
             } finally { C.$("#campos-perfil").disabled = false; }
         });
     };
-    window.addEventListener("pagehide",clearPreview);
-    init().catch(error => C.message(C.error(error),true));
+    window.addEventListener("pagehide", clearPreview);
+    C.$("#ampliar-avatar").onclick = () => { const image = C.$("#avatar"); if (!image.src) return; C.$("#foto-ampliada").src = image.src; C.$("#foto-fullscreen").showModal(); };
+    C.$("#fechar-foto").onclick = () => C.$("#foto-fullscreen").close();
+    init().catch(error => C.message(C.error(error), true));
 })();

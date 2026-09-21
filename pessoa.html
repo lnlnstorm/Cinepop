@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Pessoa | Cinepop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body class="pagina-app">
+    <header class="cabecalho" id="cabecalho"></header>
+    <main class="container">
+        <p id="status" class="status"></p>
+        <section id="pessoa-conteudo" hidden><a href="javascript:history.back()">← Voltar</a>
+            <div class="perfil-hero"><img id="pessoa-foto" class="avatar" hidden alt="">
+                <div><span class="eyebrow">PESSOA DO CINEMA</span>
+                    <h1 id="pessoa-nome"></h1>
+                    <p id="pessoa-bio" class="texto-livre"></p>
+                </div>
+            </div>
+            <section class="secao">
+                <h2>Conhecido por</h2>
+                <div id="pessoa-creditos" class="grid-filmes"></div>
+            </section>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="js/supabase.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script src="js/config.local.js" defer></script>
+    <script src="js/tmdb.js" defer></script>
+    <script src="js/pessoa.js" defer></script>
+</body>
+
+</html>

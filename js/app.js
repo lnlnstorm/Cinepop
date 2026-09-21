@@ -85,7 +85,8 @@
     };
     C.listCard = list => '<article class="painel lista-card"><a href="lista.html?id=' + encodeURIComponent(list.id) + '"><h3>' +
         C.escape(list.titulo) + '</h3></a><p>' + C.escape(list.descricao || "Sem descrição.") +
-        '</p><span class="etiqueta">' + (list.publica ? "Pública" : "Privada") + '</span></article>';
+        '</p><span class="etiqueta">' + (list.publica ? "Pública" : "Privada") + '</span>' +
+        (list.tags?.length ? '<p class="tags-lista">' + list.tags.map(tag => '<span>#' + C.escape(tag) + '</span>').join('') + '</p>' : '') + '</article>';
     C.ready = (async () => {
         const header = C.$("#cabecalho");
         if (header) header.innerHTML = '<a class="logo" href="index.html">Cine<span>pop</span></a><nav aria-label="Navegação principal">' +

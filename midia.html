@@ -29,7 +29,7 @@
                         salvar títulos.</p>
                 </div>
             </div>
-            <div id="acoes-usuario" hidden>
+                <div id="acoes-usuario" hidden>
                 <div class="acoes"><button id="watchlist" class="btn-secundario" aria-pressed="false">+
                         Watchlist</button><button id="favorito" class="btn-secundario" aria-pressed="false">♡
                         Favoritar</button></div>
@@ -51,6 +51,7 @@
                                     <option value="4.5">4.5 / 5</option>
                                     <option value="5">5.0 / 5</option>
                                 </select></div>
+                            <div class="diario-inline"><div class="campo"><label for="data-assistido">Data em que assistiu</label><input id="data-assistido" type="date"></div><label class="check"><input id="reassistido" type="checkbox"> Reassisti este título</label></div>
                             <div class="campo"><label for="review">O que você achou?</label><textarea id="review"
                                     rows="5" maxlength="5000" placeholder="Conte sua experiência"></textarea></div>
                             <label class="check"><input type="checkbox" id="spoiler"> Contém spoilers</label>
@@ -71,6 +72,7 @@
                     </section>
                 </div>
             </div>
+            <section class="secao"><h2>Elenco principal</h2><div id="elenco" class="elenco"></div></section>
             <section class="secao">
                 <h2>Avaliações recentes</h2>
                 <p class="muted">Até 30 avaliações visíveis mais recentes. A média inclui todas as avaliações públicas e

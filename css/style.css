@@ -99,7 +99,7 @@ nav a:hover {
 
     border: none;
 
-    background: #00c030;
+    background: #d62839;
     color: white;
 
     font-weight: bold;
@@ -110,7 +110,7 @@ nav a:hover {
 }
 
 .barra-pesquisa button:hover {
-    background: #00a628;
+    background: #ad1f2d;
 }
 
 
@@ -229,7 +229,7 @@ nav a:hover {
 }
 
 .nota-comunidade strong {
-    color: #00e054;
+    color: #e63946;
 
     font-size: 25px;
 }
@@ -282,7 +282,7 @@ textarea {
     border: none;
     border-radius: 6px;
 
-    background: #00c030;
+    background: #d62839;
     color: white;
 
     font-weight: bold;
@@ -291,7 +291,7 @@ textarea {
 }
 
 .btn-salvar:hover {
-    background: #00a628;
+    background: #ad1f2d;
 }
 
 #mensagem {
@@ -424,7 +424,7 @@ textarea {
 
 
 .auth-box input:focus {
-    border-color: #00c030;
+    border-color: #e63946;
 }
 
 
@@ -470,7 +470,7 @@ textarea {
 
     border-radius: 6px;
 
-    background: #00c030;
+    background: #d62839;
 
     color: white;
 
@@ -484,7 +484,7 @@ textarea {
 
 
 .btn-auth:hover {
-    background: #00a628;
+    background: #ad1f2d;
 }
 
 
@@ -509,7 +509,7 @@ textarea {
 
 
 .auth-alternativa a {
-    color: #00c030;
+    color: #e63946;
 
     text-decoration: none;
 
@@ -551,5 +551,5 @@ textarea {
 
 
 .mensagem-auth.sucesso {
-    color: #00e054;
+    color: #e63946;
 }

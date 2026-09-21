@@ -16,56 +16,100 @@
     <main class="container" id="principal">
         <p id="status" class="status" role="status" aria-live="polite"></p>
         <section id="conteudo-perfil" hidden>
-            <div class="perfil-hero"><div id="avatar-iniciais" class="avatar avatar-iniciais" aria-label="Perfil sem foto"></div><img id="avatar" class="avatar" alt="Avatar do perfil" hidden>
+            <div class="perfil-hero">
+                <div id="avatar-iniciais" class="avatar avatar-iniciais" aria-label="Perfil sem foto"></div><button
+                    id="ampliar-avatar" class="avatar-botao" type="button" aria-label="Ampliar foto do perfil"
+                    hidden><img id="avatar" class="avatar" alt="Avatar do perfil"></button>
                 <div><span class="eyebrow">PERFIL CINEPOP</span>
                     <h1 id="nome-perfil"></h1>
                     <p id="username-perfil" class="muted"></p>
                     <p id="bio-perfil" class="texto-livre"></p>
+                    <p id="links-sociais" class="links-sociais"></p>
                     <p id="contagens"></p><button id="seguir" class="btn-salvar" hidden>Seguir</button>
                 </div>
             </div>
             <details id="editar-perfil" class="painel" hidden>
                 <summary>Editar meu perfil</summary>
-                <form id="form-perfil"><fieldset id="campos-perfil">
-                    <div class="duas-colunas">
-                        <div class="campo"><label for="nome">Nome</label><input id="nome" maxlength="80"></div>
-                        <div class="campo"><label for="username">Nome de usuário</label><input id="username" required
-                                minlength="3" maxlength="30" pattern="[a-zA-Z0-9._]+"></div>
-                    </div>
-                    <div class="campo"><label for="bio">Biografia</label><textarea id="bio" maxlength="500"
-                            rows="3"></textarea></div>
-                    <div class="edicao-foto">
-<label for="foto-arquivo">Escolher foto do computador ou celular</label>
-<input id="foto-arquivo" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="ajuda-foto">
-<small id="ajuda-foto">JPG, PNG ou WebP, até 10 MB. A foto será recortada no centro.</small>
-<img id="foto-preview" class="foto-preview" alt="Prévia da nova foto" hidden>
-<button type="button" id="remover-foto" class="btn-secundario">Remover foto</button>
-<p id="status-foto" class="status" role="status" aria-live="polite"></p>
-<details><summary>Ou usar um link de imagem</summary>
-<div class="campo"><label for="avatar-url">Endereço HTTPS da imagem</label><input id="avatar-url" type="url" placeholder="https://..." maxlength="2000"></div>
-</details></div><label
-                        class="check"><input id="perfil-privado" type="checkbox"> Perfil privado: somente você pode ver
-                        seu perfil e suas atividades.</label><button class="btn-salvar" id="salvar-perfil">Salvar
-                        perfil</button>
-                </fieldset></form>
+                <form id="form-perfil">
+                    <fieldset id="campos-perfil">
+                        <div class="duas-colunas">
+                            <div class="campo"><label for="nome">Nome</label><input id="nome" maxlength="80"></div>
+                            <div class="campo"><label for="username">Nome de usuário</label><input id="username"
+                                    required minlength="3" maxlength="30" pattern="[a-zA-Z0-9._]+"></div>
+                        </div>
+                        <div class="campo"><label for="bio">Biografia</label><textarea id="bio" maxlength="500"
+                                rows="3"></textarea></div>
+                        <div class="duas-colunas">
+                            <div class="campo"><label for="instagram-url">Instagram</label><input id="instagram-url"
+                                    type="url" placeholder="https://instagram.com/seuusuario"></div>
+                            <div class="campo"><label for="letterboxd-url">Letterboxd</label><input id="letterboxd-url"
+                                    type="url" placeholder="https://letterboxd.com/seuusuario"></div>
+                        </div>
+                        <div class="edicao-foto">
+                            <label for="foto-arquivo">Escolher foto do computador ou celular</label>
+                            <input id="foto-arquivo" type="file" accept="image/jpeg,image/png,image/webp"
+                                aria-describedby="ajuda-foto">
+                            <small id="ajuda-foto">JPG, PNG ou WebP, até 10 MB. A foto será recortada no centro.</small>
+                            <img id="foto-preview" class="foto-preview" alt="Prévia da nova foto" hidden>
+                            <button type="button" id="remover-foto" class="btn-secundario">Remover foto</button>
+                            <p id="status-foto" class="status" role="status" aria-live="polite"></p>
+                            <details>
+                                <summary>Ou usar um link de imagem</summary>
+                                <div class="campo"><label for="avatar-url">Endereço HTTPS da imagem</label><input
+                                        id="avatar-url" type="url" placeholder="https://..." maxlength="2000"></div>
+                            </details>
+                        </div><label class="check"><input id="perfil-privado" type="checkbox"> Perfil privado: somente
+                            você pode ver
+                            seu perfil e suas atividades.</label><button class="btn-salvar" id="salvar-perfil">Salvar
+                            perfil</button>
+                    </fieldset>
+                </form>
             </details>
             <section class="secao" aria-labelledby="titulo-estatisticas">
-<h2 id="titulo-estatisticas">Cinema em números</h2>
-<div class="estatisticas-perfil">
-<div class="estatistica"><strong id="total-avaliacoes">0</strong><span>Avaliações</span></div>
-<div class="estatistica"><strong id="media-perfil">—</strong><span>Média das notas</span></div>
-<div class="estatistica"><strong id="total-filmes">0</strong><span>Filmes avaliados</span></div>
-<div class="estatistica"><strong id="total-series">0</strong><span>Séries avaliadas</span></div>
-</div>
-<div class="painel"><h3>Distribuição das notas</h3><p class="muted">De meia a cinco estrelas. Clique em uma barra para ver as avaliações daquela nota.</p>
-<div id="grafico-notas" class="grafico-notas" role="group" aria-label="Distribuição das avaliações por nota"></div>
-<details><summary>Ver tabela de notas</summary><table class="tabela-notas"><caption>Quantidade e porcentagem de avaliações por nota</caption><thead><tr><th scope="col">Nota</th><th scope="col">Quantidade</th><th scope="col">Porcentagem</th></tr></thead><tbody id="tabela-notas"></tbody></table></details>
-</div></section>
-<section class="secao"><h2>Filmes avaliados recentemente</h2><p class="muted">As seis avaliações de filmes mais recentes, pela data em que foram publicadas.</p><div id="filmes-recentes" class="grid-filmes"></div></section>
-<section class="secao"><h2>Favoritos</h2>
+                <div class="estatisticas-perfil">
+                    <div class="estatistica"><strong id="total-avaliacoes">0</strong><span>Avaliações</span></div>
+                    <div class="estatistica"><strong id="media-perfil">—</strong><span>Média das notas</span></div>
+                    <button class="estatistica filtro-tipo" type="button" data-tipo="movie"><strong
+                            id="total-filmes">0</strong><span>Filmes avaliados</span></button>
+                    <button class="estatistica filtro-tipo" type="button" data-tipo="tv"><strong
+                            id="total-series">0</strong><span>Séries avaliadas</span></button>
+                </div>
+                <div class="painel">
+                    <h3>Distribuição das notas</h3>
+                    <div id="grafico-notas" class="grafico-notas" role="group"
+                        aria-label="Distribuição das avaliações por nota"></div>
+                    <details>
+                        <summary>Ver tabela de notas</summary>
+                        <table class="tabela-notas">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nota</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col">Porcentagem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-notas"></tbody>
+                        </table>
+                    </details>
+                </div>
+            </section>
+            <section class="secao">
+                <h2>Filmes avaliados recentemente</h2>
+                <div id="filmes-recentes" class="grid-filmes"></div>
+            </section>
+            <section class="secao">
+                <h2>Favoritos</h2>
                 <div id="favoritos" class="grid-filmes"></div>
             </section>
-            <details id="todas-avaliacoes" class="secao painel"><summary>Todas as avaliações</summary><div class="filtro-notas"><span id="filtro-nota">Todas as notas</span><button type="button" id="limpar-nota" class="btn-secundario" hidden>Mostrar todas</button></div><div id="avaliacoes" class="grid-filmes"></div></details>
+            <details id="todas-avaliacoes" class="secao painel">
+                <summary>Todas as avaliações</summary>
+                <div class="filtro-notas"><span id="filtro-nota">Todas as notas</span><label>Data assistida <select
+                            id="filtro-ano">
+                            <option value="">Todos os anos</option>
+                        </select></label><button type="button" id="limpar-nota" class="btn-secundario" hidden>Mostrar
+                        todas</button></div>
+                <div id="avaliacoes" class="grid-filmes"></div>
+            </details>
             <section class="secao" id="secao-watchlist" hidden>
                 <h2>Minha watchlist</h2>
                 <p class="muted">Somente você pode ver esta seleção. Abra um título para removê-lo.</p>
@@ -77,6 +121,8 @@
             </section>
         </section>
     </main>
+    <dialog id="foto-fullscreen" class="foto-fullscreen"><button type="button" class="btn-secundario"
+            id="fechar-foto">Fechar</button><img id="foto-ampliada" alt="Foto de perfil ampliada"></dialog>
     <footer class="rodape">Cinepop · Seu próximo favorito está por aqui.<br><a href="https://www.themoviedb.org/"
             target="_blank" rel="noopener noreferrer">Dados e imagens: TMDB</a><small>This product uses the TMDB API but
             is not endorsed or certified by TMDB.</small></footer>
