@@ -29,7 +29,10 @@
                 if (error.code === "user_already_exists" || /already registered/i.test(error.message)) throw new Error("Este e-mail já possui uma conta.");
                 if (error.status === 429) throw new Error("Muitas tentativas. Aguarde um pouco antes de tentar novamente.");
                 if (error.code === "weak_password") throw new Error("A senha não atende aos requisitos. Use uma senha mais forte.");
+                if (/redirect|url/i.test(error.message)) throw new Error("O endereço de confirmação não está autorizado no Supabase. Adicione este endereço em Authentication > URL Configuration: " + new URL("login.html", location.href).href);
+                if (/invalid.*email|email.*invalid/i.test(error.message)) throw new Error("Informe um endereço de e-mail válido.");
                 if (/database|duplicate|username/i.test(error.message)) throw new Error("Não foi possível salvar o perfil. Tente outro nome de usuário; se persistir, a configuração do cadastro precisa ser conferida.");
+                if (typeof error.message === "string" && error.message.trim()) throw new Error(error.message);
                 throw new Error("Não foi possível criar a conta. Confira os dados e tente novamente.");
             }
             if (!data.user) throw new Error("O cadastro não foi confirmado. Tente novamente.");
